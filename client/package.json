@@ -1,13 +1,21 @@
 {
-  "name": "client",
+  "name": "toolnestai-client",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A modern React + TypeScript frontend for ToolNest AI. Built with Vite, Tailwind CSS, Clerk authentication, and a modular API layer. Provides a clean, scalable architecture for AI content generation, image tools, document processing, and user dashboards.",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css}\"",
+    "check": "pnpm typecheck && pnpm lint && pnpm format:check",
+    "validate": "pnpm check",
+    "build:clean": "rm -rf dist && vite build"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.35.1",
@@ -22,14 +30,29 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "@eslint/js": "^9.30.1",
+    "@types/node": "^24.10.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
     "@vitejs/plugin-react": "^4.6.0",
-    "eslint": "^9.30.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^16.3.0",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.46.4",
     "vite": "^7.0.4"
-  }
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.4"
 }
