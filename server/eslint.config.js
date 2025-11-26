@@ -1,47 +1,37 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import reactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
+import tsParser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import prettierPlugin from "eslint-plugin-prettier";
 
 export default [
   {
     ignores: ["dist/**", "node_modules/**"],
-  },
 
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
-
-  {
-    files: ["src/**/*.{ts,tsx}"],
+    files: ["src/**/*.ts"],
 
     languageOptions: {
+      parser: tsParser,
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-        ecmaFeatures: { jsx: true },
-      },
-      globals: {
-        ...globals.browser,
-        ...globals.es2021,
       },
     },
 
     plugins: {
-      "react-hooks": reactHooks,
+      "@typescript-eslint": tsPlugin,
+      prettier: prettierPlugin,
     },
 
     rules: {
-      // TS
-      "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/consistent-type-imports": "off",
-      "@typescript-eslint/no-explicit-any": "off",
+      // TypeScript quality rules
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
 
-      // Hooks
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
+      // Prettier formatting enforcement
+      "prettier/prettier": "error",
 
-      // JS cleanup
-      "no-unused-vars": "off",
+      "no-console": "off",
+      "no-var": "error",
+      "prefer-const": "error",
     },
   },
 ];
