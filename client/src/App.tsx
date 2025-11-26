@@ -2,8 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Layout from "./pages/Layout";
@@ -25,8 +23,6 @@ export default function App() {
       <Routes>
         {/* Public */}
         <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
 
         {/* Protected */}
         <Route element={<ProtectedRoute />}>
