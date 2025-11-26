@@ -10,6 +10,7 @@ declare global {
         userId?: string;
         has?: (input: { plan: string }) => Promise<boolean>;
       }>;
+      file?: Express.Multer.File;
     }
   }
 }
