@@ -9,13 +9,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css}\"",
-    "check": "pnpm typecheck && pnpm lint && pnpm format:check",
-    "validate": "pnpm check",
-    "build:clean": "rm -rf dist && vite build"
+    "lint": "eslint src",
+    "format": "prettier --write src",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.35.1",

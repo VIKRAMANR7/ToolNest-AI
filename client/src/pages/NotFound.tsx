@@ -5,7 +5,7 @@ export default function NotFound() {
   const handleGoBack = () => window.history.back();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-gray-50 to-gray-100">
       <div className="px-4 text-center">
         <h1 className="text-9xl font-bold text-gray-800">404</h1>
         <h2 className="mt-4 text-3xl font-semibold text-gray-700">Page Not Found</h2>

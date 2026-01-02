@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home";
-
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
@@ -21,10 +20,8 @@ export default function App() {
       <Toaster />
 
       <Routes>
-        {/* Public */}
         <Route path="/" element={<Home />} />
 
-        {/* Protected */}
         <Route element={<ProtectedRoute />}>
           <Route path="/ai" element={<Layout />}>
             <Route index element={<Dashboard />} />
@@ -38,7 +35,6 @@ export default function App() {
           </Route>
         </Route>
 
-        {/* Catch-all */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

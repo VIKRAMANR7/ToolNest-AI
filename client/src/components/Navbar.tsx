@@ -2,6 +2,7 @@ import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { assets } from "../assets/assets";
 
 export default function Navbar() {
@@ -11,7 +12,7 @@ export default function Navbar() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  function handleGetStarted(): void {
+  function handleGetStarted() {
     if (user) navigate("/ai");
     else openSignIn();
   }

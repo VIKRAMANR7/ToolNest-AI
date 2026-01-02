@@ -1,7 +1,6 @@
 import { Protect, useAuth } from "@clerk/clerk-react";
 import { Gem, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 
 import CreationItem from "../components/CreationItem";
@@ -12,10 +11,9 @@ export default function Dashboard() {
   const [creations, setCreations] = useState<Creation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
   const { isSignedIn, getToken } = useAuth();
 
-  async function fetchDashboardData() {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -31,25 +29,18 @@ export default function Dashboard() {
         setCreations([]);
         toast.error(data.message || "Failed to load creations");
       }
-    } catch (error: unknown) {
-      const err = error as { response?: { status?: number; data?: { message?: string } } };
-
-      if (err.response?.status === 401) {
-        navigate("/sign-in");
-        return;
-      }
-
-      toast.error(err.response?.data?.message || "Something went wrong");
+    } catch {
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
-  }
+  }, [getToken]);
 
   useEffect(() => {
     if (isSignedIn) {
-      void fetchDashboardData();
+      fetchDashboardData();
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, fetchDashboardData]);
 
   return (
     <div className="h-full overflow-y-scroll p-6">
@@ -59,7 +50,7 @@ export default function Dashboard() {
             <p className="text-sm">Total Creations</p>
             <h2 className="text-xl font-semibold">{creations.length}</h2>
           </div>
-          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-r from-[#3588f2] to-[#0bb0d7] text-white">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-linear-to-r from-[#3588f2] to-[#0bb0d7] text-white">
             <Sparkles className="w-5" />
           </div>
         </div>
@@ -73,7 +64,7 @@ export default function Dashboard() {
               </Protect>
             </h2>
           </div>
-          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-r from-[#ff61c5] to-[#9e53ee] text-white">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-linear-to-r from-[#ff61c5] to-[#9e53ee] text-white">
             <Gem className="w-5" />
           </div>
         </div>

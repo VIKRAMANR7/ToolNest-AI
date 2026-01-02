@@ -1,10 +1,13 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Scissors, Sparkles } from "lucide-react";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+
 import api from "../utils/api";
 import type { ContentResponse } from "../types/api";
 import { API_ENDPOINTS } from "../config/constants";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export default function RemoveObject() {
   const [file, setFile] = useState<File | null>(null);
@@ -14,7 +17,7 @@ export default function RemoveObject() {
 
   const { getToken } = useAuth();
 
-  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
     if (!selected) return;
 
@@ -28,7 +31,7 @@ export default function RemoveObject() {
       return;
     }
 
-    if (selected.size > 10 * 1024 * 1024) {
+    if (selected.size > MAX_FILE_SIZE) {
       toast.error("Image must be less than 10MB");
       return;
     }
@@ -36,7 +39,7 @@ export default function RemoveObject() {
     setFile(selected);
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!file) {
@@ -111,7 +114,7 @@ export default function RemoveObject() {
 
         <button
           disabled={loading}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#417df6] to-[#8e37eb] px-4 py-2 text-sm text-white disabled:opacity-50"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#417df6] to-[#8e37eb] px-4 py-2 text-sm text-white disabled:opacity-50"
         >
           {loading ? (
             <span className="my-1 size-4 animate-spin rounded-full border-2 border-t-transparent" />

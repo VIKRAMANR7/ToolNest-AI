@@ -1,10 +1,13 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Download, Eraser, Sparkles, Trash2 } from "lucide-react";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+
 import api from "../utils/api";
 import type { ContentResponse } from "../types/api";
 import { API_ENDPOINTS } from "../config/constants";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export default function RemoveBackground() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -14,7 +17,7 @@ export default function RemoveBackground() {
 
   const { getToken } = useAuth();
 
-  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -23,7 +26,7 @@ export default function RemoveBackground() {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > MAX_FILE_SIZE) {
       toast.error("Image must be less than 10MB");
       return;
     }
@@ -33,7 +36,7 @@ export default function RemoveBackground() {
     setResultUrl("");
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (!selectedFile) {
@@ -88,7 +91,7 @@ export default function RemoveBackground() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8">
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-gradient-to-br from-orange-500 to-red-500 p-2">
+            <div className="rounded-lg bg-linear-to-br from-orange-500 to-red-500 p-2">
               <Eraser className="size-6 text-white" />
             </div>
             <h1 className="text-3xl font-bold">Background Removal</h1>
@@ -97,7 +100,6 @@ export default function RemoveBackground() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* Upload Section */}
           <div className="rounded-xl border bg-white p-6 shadow-sm">
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="size-5 text-orange-500" />
@@ -105,7 +107,6 @@ export default function RemoveBackground() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* File Upload */}
               <label
                 htmlFor="file-upload"
                 className="block w-full cursor-pointer rounded-lg border-2 border-dashed p-8 text-center hover:border-orange-500"
@@ -136,7 +137,7 @@ export default function RemoveBackground() {
                 <button
                   type="submit"
                   disabled={!selectedFile || isProcessing}
-                  className="flex flex-1 items-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3 text-white disabled:opacity-50"
+                  className="flex flex-1 items-center gap-2 rounded-lg bg-linear-to-r from-orange-500 to-red-500 px-6 py-3 text-white disabled:opacity-50"
                 >
                   {isProcessing ? (
                     <>

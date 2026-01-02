@@ -1,6 +1,7 @@
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 import { AiToolsData } from "../assets/assets";
 
 export default function AiTools() {
@@ -8,7 +9,7 @@ export default function AiTools() {
   const { user } = useUser();
   const { openSignIn } = useClerk();
 
-  function handleToolClick(path: string): void {
+  function handleToolClick(path: string) {
     if (!user) {
       openSignIn();
       return;

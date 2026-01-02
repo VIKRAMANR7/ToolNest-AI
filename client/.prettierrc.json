@@ -11,4 +11,3 @@
   "jsxSingleQuote": false,
   "plugins": ["prettier-plugin-tailwindcss"]
 }
-

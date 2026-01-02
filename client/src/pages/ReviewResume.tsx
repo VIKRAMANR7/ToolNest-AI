@@ -1,10 +1,13 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Edit, Sparkles } from "lucide-react";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
+
 import api from "../utils/api";
 import type { ContentResponse } from "../types/api";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export default function ReviewResume() {
   const [file, setFile] = useState<File | null>(null);
@@ -13,7 +16,7 @@ export default function ReviewResume() {
 
   const { getToken } = useAuth();
 
-  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
     if (!selected) return;
 
@@ -22,7 +25,7 @@ export default function ReviewResume() {
       return;
     }
 
-    if (selected.size > 5 * 1024 * 1024) {
+    if (selected.size > MAX_FILE_SIZE) {
       toast.error("File size must be less than 5MB");
       return;
     }
@@ -30,7 +33,7 @@ export default function ReviewResume() {
     setFile(selected);
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!file) {
@@ -85,7 +88,7 @@ export default function ReviewResume() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#226bff] to-[#65adff] px-4 py-2 text-sm text-white disabled:opacity-50"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#226bff] to-[#65adff] px-4 py-2 text-sm text-white disabled:opacity-50"
         >
           {loading ? (
             <span className="my-1 size-4 animate-spin rounded-full border-2 border-t-transparent" />
@@ -106,7 +109,7 @@ export default function ReviewResume() {
           <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
             <div className="flex flex-col items-center gap-5">
               <Edit className="size-9" />
-              <p>Upload a resume and click “Review Resume” to get started</p>
+              <p>Upload a resume and click "Review Resume" to get started</p>
             </div>
           </div>
         ) : (

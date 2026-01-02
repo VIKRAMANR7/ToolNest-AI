@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import Markdown from "react-markdown";
+
 import type { Creation } from "../types/database";
 
 interface CreationItemProps {
@@ -10,7 +11,7 @@ interface CreationItemProps {
 export default function CreationItem({ item }: CreationItemProps) {
   const [expanded, setExpanded] = useState(false);
 
-  function toggleExpand(): void {
+  function toggleExpand() {
     setExpanded((prev) => !prev);
   }
 

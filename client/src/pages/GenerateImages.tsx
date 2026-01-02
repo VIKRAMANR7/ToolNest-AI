@@ -1,24 +1,24 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Image as ImageIcon, Sparkles } from "lucide-react";
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+
 import api from "../utils/api";
 import type { ContentResponse } from "../types/api";
 import { API_ENDPOINTS } from "../config/constants";
 
+const imageStyles = [
+  "Realistic",
+  "Ghibli style",
+  "Anime style",
+  "Cartoon style",
+  "Fantasy style",
+  "3D style",
+  "Portrait style",
+];
+
 export default function GenerateImages() {
-  const imageStyles = [
-    "Realistic",
-    "Ghibli style",
-    "Anime style",
-    "Cartoon style",
-    "Fantasy style",
-    "3D style",
-    "Portrait style",
-  ] as const;
-
-  const [selectedStyle, setSelectedStyle] = useState<(typeof imageStyles)[number]>("Realistic");
-
+  const [selectedStyle, setSelectedStyle] = useState("Realistic");
   const [input, setInput] = useState("");
   const [publish, setPublish] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function GenerateImages() {
 
   const { getToken } = useAuth();
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim()) {
       toast.error("Please describe your image");
@@ -109,7 +109,7 @@ export default function GenerateImages() {
 
         <button
           disabled={loading}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-green-600 to-green-400 px-4 py-2 text-sm text-white disabled:opacity-50"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-green-600 to-green-400 px-4 py-2 text-sm text-white disabled:opacity-50"
         >
           {loading ? (
             <span className="my-1 size-4 animate-spin rounded-full border-2 border-t-transparent" />

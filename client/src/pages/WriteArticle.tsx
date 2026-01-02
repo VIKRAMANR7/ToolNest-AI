@@ -1,22 +1,22 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Edit, Sparkles } from "lucide-react";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 
 import api from "../utils/api";
 import type { ContentResponse } from "../types/api";
-import { articleLengthOptions, type ArticleLength } from "../assets/assets";
+import { articleLengthOptions } from "../assets/assets";
 
 export default function WriteArticle() {
-  const [selectedLength, setSelectedLength] = useState<ArticleLength>(articleLengthOptions[0]);
+  const [selectedLength, setSelectedLength] = useState(articleLengthOptions[0]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
 
   const { getToken } = useAuth();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!input.trim()) {
@@ -54,10 +54,6 @@ export default function WriteArticle() {
     }
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setInput(e.target.value);
-  }
-
   return (
     <div className="flex h-full flex-wrap items-start gap-4 overflow-y-scroll p-6 text-slate-700">
       <form
@@ -72,7 +68,7 @@ export default function WriteArticle() {
         <p className="mt-6 text-sm font-medium">Article Topic</p>
         <input
           value={input}
-          onChange={handleInputChange}
+          onChange={(e) => setInput(e.target.value)}
           type="text"
           placeholder="The future of artificial intelligence..."
           className="mt-2 w-full rounded-md border border-gray-300 p-2 px-3 text-sm outline-none"
@@ -100,7 +96,7 @@ export default function WriteArticle() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#226bff] to-[#65adff] px-4 py-2 text-sm text-white disabled:opacity-50"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#226bff] to-[#65adff] px-4 py-2 text-sm text-white disabled:opacity-50"
         >
           {loading ? (
             <span className="my-1 size-4 animate-spin rounded-full border-2 border-t-transparent" />
@@ -121,7 +117,7 @@ export default function WriteArticle() {
           <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
             <div className="flex flex-col items-center gap-5">
               <Edit className="size-9" />
-              <p>Enter a topic and click “Generate Article” to get started</p>
+              <p>Enter a topic and click "Generate Article" to get started</p>
             </div>
           </div>
         ) : (

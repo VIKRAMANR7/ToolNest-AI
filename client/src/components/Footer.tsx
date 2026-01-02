@@ -1,13 +1,14 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+
 import { assets, footerLinks } from "../assets/assets";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleNewsletterSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!email || !email.includes("@")) {

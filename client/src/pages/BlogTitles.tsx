@@ -1,34 +1,32 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Edit, Hash, Sparkles } from "lucide-react";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 
 import api from "../utils/api";
 import type { ContentResponse } from "../types/api";
 
+const blogCategories = [
+  "General",
+  "Technology",
+  "Business",
+  "Health",
+  "Lifestyle",
+  "Education",
+  "Travel",
+  "Food",
+];
+
 export default function BlogTitles() {
-  const blogCategories = [
-    "General",
-    "Technology",
-    "Business",
-    "Health",
-    "Lifestyle",
-    "Education",
-    "Travel",
-    "Food",
-  ] as const;
-
-  const [selectedCategory, setSelectedCategory] =
-    useState<(typeof blogCategories)[number]>("General");
-
+  const [selectedCategory, setSelectedCategory] = useState("General");
   const [input, setInput] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { getToken } = useAuth();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!input.trim()) {
@@ -60,10 +58,6 @@ export default function BlogTitles() {
     }
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setInput(e.target.value);
-  }
-
   return (
     <div className="flex h-full flex-wrap items-start gap-4 overflow-y-scroll p-6 text-slate-700">
       <form
@@ -78,7 +72,7 @@ export default function BlogTitles() {
         <p className="mt-6 text-sm font-medium">Keyword</p>
         <input
           value={input}
-          onChange={handleInputChange}
+          onChange={(e) => setInput(e.target.value)}
           type="text"
           placeholder="e.g. Future of AI, Healthy lifestyle..."
           className="mt-2 w-full rounded-md border border-gray-300 p-2 px-3 text-sm outline-none"
@@ -126,7 +120,7 @@ export default function BlogTitles() {
           <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
             <div className="flex flex-col items-center gap-4">
               <Hash className="size-9" />
-              <p>Enter a keyword and click “Generate Title”</p>
+              <p>Enter a keyword and click "Generate Title"</p>
             </div>
           </div>
         ) : (

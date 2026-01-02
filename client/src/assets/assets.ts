@@ -12,6 +12,7 @@ import {
   Twitter,
   Users,
 } from "lucide-react";
+
 import type { AiTool, Assets, Testimonial } from "../types/assets";
 import type { FooterLinks, NavItem } from "../types/footer";
 import logo from "./logo.svg";
@@ -30,9 +31,7 @@ export const articleLengthOptions = [
   { length: 800, text: "Short (500-800 words)" },
   { length: 1200, text: "Medium (1000-1500 words)" },
   { length: 1600, text: "Long (1500+ words)" },
-] as const;
-
-export type ArticleLength = (typeof articleLengthOptions)[number];
+];
 
 export const AiToolsData: AiTool[] = [
   {

@@ -1,6 +1,7 @@
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { ArrowRight, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 import { assets } from "../assets/assets";
 
 export default function Hero() {
@@ -8,17 +9,17 @@ export default function Hero() {
   const { user } = useUser();
   const { openSignIn } = useClerk();
 
-  function handleGetStarted(): void {
+  function handleGetStarted() {
     if (user) navigate("/ai");
     else openSignIn();
   }
 
-  function handleWatchDemo(): void {
+  function handleWatchDemo() {
     alert("Demo coming soon!");
   }
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center bg-gradient-to-b from-blue-50 via-white to-white pt-20">
+    <section className="relative flex min-h-screen items-center justify-center bg-linear-to-b from-blue-50 via-white to-white pt-20">
       <div className="absolute inset-0 bg-[url(/gradientBackground.png)] bg-cover bg-no-repeat opacity-50" />
 
       <div className="relative z-10 px-4 text-center sm:px-20 xl:px-32">

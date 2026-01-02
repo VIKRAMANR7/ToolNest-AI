@@ -1,6 +1,7 @@
 import { Protect, useClerk, useUser } from "@clerk/clerk-react";
 import { Crown, LogOut, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
+
 import { navItems } from "../assets/assets";
 
 interface SidebarProps {
@@ -73,7 +74,7 @@ export default function Sidebar({ sidebar, setSidebar }: SidebarProps) {
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition ${
                     isActive
-                      ? "bg-gradient-to-r from-[#3c81f6] to-[#9234ea] text-white shadow-md"
+                      ? "bg-linear-to-r from-[#3c81f6] to-[#9234ea] text-white shadow-md"
                       : "text-gray-700 hover:bg-gray-100"
                   }`
                 }
@@ -84,7 +85,6 @@ export default function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
                     <span className="flex-1">{label}</span>
 
-                    {/* Premium badge for locked tools */}
                     {premium && !isPremiumUser && !isActive && (
                       <Crown className="size-4 text-amber-500" />
                     )}
@@ -115,7 +115,7 @@ export default function Sidebar({ sidebar, setSidebar }: SidebarProps) {
             </button>
 
             <button
-              onClick={() => void signOut()}
+              onClick={() => signOut()}
               className="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
               aria-label="Sign out"
               title="Sign out"

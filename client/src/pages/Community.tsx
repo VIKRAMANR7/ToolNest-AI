@@ -2,6 +2,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { Heart, Image as ImageIcon, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
 import type { Creation } from "../types/database";
 import api from "../utils/api";
 import { API_ENDPOINTS } from "../config/constants";
@@ -83,7 +84,7 @@ export default function Community() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8">
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 p-2">
+            <div className="rounded-lg bg-linear-to-br from-purple-500 to-pink-500 p-2">
               <Sparkles className="size-6 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900">Community Gallery</h1>
