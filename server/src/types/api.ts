@@ -1,11 +1,4 @@
-import { Creation } from "./database.js";
-
-export interface ApiResponse<T = unknown> {
-  success: boolean;
-  message?: string;
-  error?: string;
-  data?: T;
-}
+import type { Creation } from "./database.js";
 
 export interface CreationsResponse {
   success: boolean;

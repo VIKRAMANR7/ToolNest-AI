@@ -7,7 +7,7 @@ export function connectCloudinary() {
     api_secret: process.env.CLOUDINARY_API_SECRET!,
   });
 
-  console.log("☁️ Cloudinary configured");
+  console.log("Cloudinary configured");
 }
 
 export { cloudinary };

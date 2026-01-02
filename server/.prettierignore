@@ -1,7 +1,3 @@
 node_modules
 dist
-coverage
-*.log
-.env
-.env.*
 pnpm-lock.yaml

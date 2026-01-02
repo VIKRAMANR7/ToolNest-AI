@@ -10,9 +10,7 @@ export async function uploadFile(path: string, folder: string) {
 }
 
 export function cleanup(path: string) {
-  try {
-    if (fs.existsSync(path)) fs.unlinkSync(path);
-  } catch (err) {
-    console.error("Cleanup error:", err);
+  if (fs.existsSync(path)) {
+    fs.unlinkSync(path);
   }
 }

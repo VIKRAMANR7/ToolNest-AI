@@ -1,17 +1,15 @@
-import multer, { FileFilterCallback } from "multer";
-import { Request } from "express";
+import multer from "multer";
 
-const allowedTypes: string[] = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
+    fileSize: MAX_FILE_SIZE,
   },
-  fileFilter: (_req: Request, file: Express.Multer.File, callback: FileFilterCallback) => {
-    const isAllowed = allowedTypes.includes(file.mimetype);
-
-    if (isAllowed) {
+  fileFilter: (_req, file, callback) => {
+    if (ALLOWED_TYPES.includes(file.mimetype)) {
       callback(null, true);
     } else {
       callback(new Error("Unsupported file type"));
@@ -19,4 +17,4 @@ const upload = multer({
   },
 });
 
-export { upload, allowedTypes };
+export { upload, ALLOWED_TYPES };

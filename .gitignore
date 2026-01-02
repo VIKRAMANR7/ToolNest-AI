@@ -1,44 +1,9 @@
-# --- Node modules ---
-client/node_modules/
-server/node_modules/
-
-# --- Build outputs ---
-client/dist/
-server/dist/
-client/.vercel/
-server/.vercel/
-
-# --- Environment files ---
-client/.env
-client/.env.local
-client/.env.production
-server/.env
-server/.env.local
-server/.env.production
-*.env
-
-# Allow example env files
-!client/.env.example
-!server/.env.example
-
-# --- Logs ---
-logs/
+node_modules
+dist
+.env
+.env.*
+!.env.example
 *.log
-npm-debug.log*
-yarn-debug.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# --- OS / Editor ---
-.vscode/
-.idea/
 .DS_Store
-Thumbs.db
-
-# --- TypeScript build info ---
-client/*.tsbuildinfo
-server/*.tsbuildinfo
-
-# --- Misc ---
-*.swp
-*.swo
+.vscode
+.idea

@@ -1,17 +1,16 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { clerkMiddleware } from "@clerk/express";
+
 import { validateEnv } from "./configs/validateEnv.js";
-import aiRouter from "./routes/aiRoutes.js";
-import userRouter from "./routes/userRoutes.js";
 import { connectDB } from "./configs/db.js";
 import { connectCloudinary } from "./configs/cloudinary.js";
+import aiRouter from "./routes/aiRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 
 validateEnv();
-
 connectDB();
-
 connectCloudinary();
 
 const app = express();
@@ -33,22 +32,17 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(clerkMiddleware());
 
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  console.log(`[${req.method}] ${req.path}`);
-  next();
-});
-
-app.get("/", (_req: Request, res: Response) => {
+app.get("/", (_req, res) => {
   res.send("ToolNest AI Server is Live");
 });
 
 app.use("/api/ai", aiRouter);
 app.use("/api/user", userRouter);
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 ToolNest AI Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
 export default app;

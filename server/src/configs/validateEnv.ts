@@ -1,13 +1,3 @@
-import "dotenv/config";
-
-function requireEnv(key: string): string {
-  const value = process.env[key];
-  if (!value) {
-    throw new Error(`❌ Missing environment variable: ${key}`);
-  }
-  return value;
-}
-
 const requiredEnvs = [
   "DATABASE_URL",
   "CLERK_PUBLISHABLE_KEY",
@@ -17,8 +7,12 @@ const requiredEnvs = [
   "CLOUDINARY_API_SECRET",
   "GEMINI_API_KEY",
   "CLIENT_URL",
-] as const;
+];
 
-export function validateEnv(): void {
-  requiredEnvs.forEach(requireEnv);
+export function validateEnv() {
+  for (const key of requiredEnvs) {
+    if (!process.env[key]) {
+      throw new Error(`Missing environment variable: ${key}`);
+    }
+  }
 }

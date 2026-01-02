@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
-import { asyncHandler } from "../middleware/asyncHandler.js";
+import type { Request, Response } from "express";
 import fs from "fs";
+import axios from "axios";
+import pdf from "pdf-parse/lib/pdf-parse.js";
+
+import { asyncHandler } from "../middleware/asyncHandler.js";
 import { AI } from "../utils/ai.js";
 import { requireUser } from "../utils/authHelpers.js";
 import { checkUsage, bumpUsage } from "../utils/usage.js";
 import { saveCreation } from "../utils/saveCreation.js";
 import { uploadBase64Image, uploadFile, cleanup } from "../utils/files.js";
-
-import axios from "axios";
-import pdf from "pdf-parse/lib/pdf-parse.js";
 
 const PREMIUM = "premium";
 const MAX_RESUME_SIZE = 5 * 1024 * 1024;
@@ -21,14 +21,12 @@ export const generateArticle = asyncHandler(async (req: Request, res: Response) 
   const { plan, free_usage } = req;
 
   if (!prompt || !prompt.trim()) {
-    res.status(400).json({ success: false, message: "Prompt is required" });
-    return;
+    return res.status(400).json({ success: false, message: "Prompt is required" });
   }
 
   const usage = checkUsage(plan, free_usage);
   if (!usage.allowed) {
-    res.status(403).json({ success: false, message: usage.message });
-    return;
+    return res.status(403).json({ success: false, message: usage.message });
   }
 
   const response = await AI.chat.completions.create({
@@ -43,7 +41,7 @@ export const generateArticle = asyncHandler(async (req: Request, res: Response) 
   await saveCreation({ userId, prompt, content, type: "article" });
   await bumpUsage(userId, plan, free_usage);
 
-  res.json({ success: true, content });
+  return res.json({ success: true, content });
 });
 
 export const generateBlogTitle = asyncHandler(async (req: Request, res: Response) => {
@@ -54,14 +52,12 @@ export const generateBlogTitle = asyncHandler(async (req: Request, res: Response
   const { plan, free_usage } = req;
 
   if (!prompt || !prompt.trim()) {
-    res.status(400).json({ success: false, message: "Prompt is required" });
-    return;
+    return res.status(400).json({ success: false, message: "Prompt is required" });
   }
 
   const usage = checkUsage(plan, free_usage);
   if (!usage.allowed) {
-    res.status(403).json({ success: false, message: usage.message });
-    return;
+    return res.status(403).json({ success: false, message: usage.message });
   }
 
   const response = await AI.chat.completions.create({
@@ -76,7 +72,7 @@ export const generateBlogTitle = asyncHandler(async (req: Request, res: Response
   await saveCreation({ userId, prompt, content, type: "blog-title" });
   await bumpUsage(userId, plan, free_usage);
 
-  res.json({ success: true, content });
+  return res.json({ success: true, content });
 });
 
 export const generateImage = asyncHandler(async (req: Request, res: Response) => {
@@ -84,15 +80,13 @@ export const generateImage = asyncHandler(async (req: Request, res: Response) =>
   if (!userId) return;
 
   if (req.plan !== PREMIUM) {
-    res.status(403).json({ success: false, message: "Premium plan required" });
-    return;
+    return res.status(403).json({ success: false, message: "Premium plan required" });
   }
 
   const { prompt, publish = false } = req.body;
 
   if (!prompt || !prompt.trim()) {
-    res.status(400).json({ success: false, message: "Prompt is required" });
-    return;
+    return res.status(400).json({ success: false, message: "Prompt is required" });
   }
 
   const form = new FormData();
@@ -114,7 +108,7 @@ export const generateImage = asyncHandler(async (req: Request, res: Response) =>
     publish,
   });
 
-  res.json({ success: true, content: uploaded.secure_url });
+  return res.json({ success: true, content: uploaded.secure_url });
 });
 
 export const removeImageBackground = asyncHandler(async (req: Request, res: Response) => {
@@ -122,14 +116,12 @@ export const removeImageBackground = asyncHandler(async (req: Request, res: Resp
   if (!userId) return;
 
   if (req.plan !== PREMIUM) {
-    res.status(403).json({ success: false, message: "Premium required" });
-    return;
+    return res.status(403).json({ success: false, message: "Premium required" });
   }
 
   const image = req.file;
   if (!image) {
-    res.status(400).json({ success: false, message: "Image required" });
-    return;
+    return res.status(400).json({ success: false, message: "Image required" });
   }
 
   const uploaded = await uploadFile(image.path, "toolnest-ai/background-removed");
@@ -142,7 +134,7 @@ export const removeImageBackground = asyncHandler(async (req: Request, res: Resp
     type: "image",
   });
 
-  res.json({ success: true, content: uploaded.secure_url });
+  return res.json({ success: true, content: uploaded.secure_url });
 });
 
 export const removeImageObject = asyncHandler(async (req: Request, res: Response) => {
@@ -150,36 +142,31 @@ export const removeImageObject = asyncHandler(async (req: Request, res: Response
   if (!userId) return;
 
   if (req.plan !== PREMIUM) {
-    res.status(403).json({ success: false, message: "Premium required" });
-    return;
+    return res.status(403).json({ success: false, message: "Premium required" });
   }
 
   const image = req.file;
   const { object } = req.body;
 
   if (!image) {
-    res.status(400).json({ success: false, message: "Image required" });
-    return;
+    return res.status(400).json({ success: false, message: "Image required" });
   }
 
   if (!object || !object.trim()) {
-    res.status(400).json({ success: false, message: "Object description required" });
-    return;
+    return res.status(400).json({ success: false, message: "Object description required" });
   }
 
   const uploaded = await uploadFile(image.path, "toolnest-ai/object-removed");
   cleanup(image.path);
 
-  const processedUrl = uploaded.secure_url;
-
   await saveCreation({
     userId,
     prompt: `Removed object: ${object}`,
-    content: processedUrl,
+    content: uploaded.secure_url,
     type: "image",
   });
 
-  res.json({ success: true, content: processedUrl });
+  return res.json({ success: true, content: uploaded.secure_url });
 });
 
 export const resumeReview = asyncHandler(async (req: Request, res: Response) => {
@@ -187,20 +174,17 @@ export const resumeReview = asyncHandler(async (req: Request, res: Response) => 
   if (!userId) return;
 
   if (req.plan !== PREMIUM) {
-    res.status(403).json({ success: false, message: "Premium required" });
-    return;
+    return res.status(403).json({ success: false, message: "Premium required" });
   }
 
   const resume = req.file;
   if (!resume) {
-    res.status(400).json({ success: false, message: "Resume required" });
-    return;
+    return res.status(400).json({ success: false, message: "Resume required" });
   }
 
   if (resume.size > MAX_RESUME_SIZE) {
     cleanup(resume.path);
-    res.status(400).json({ success: false, message: "File must be <5MB" });
-    return;
+    return res.status(400).json({ success: false, message: "File must be <5MB" });
   }
 
   const buffer = fs.readFileSync(resume.path);
@@ -226,5 +210,5 @@ export const resumeReview = asyncHandler(async (req: Request, res: Response) => 
     type: "resume-review",
   });
 
-  res.json({ success: true, content });
+  return res.json({ success: true, content });
 });
