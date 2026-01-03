@@ -1,6 +1,6 @@
 import { Protect, useAuth } from "@clerk/clerk-react";
 import { Gem, Sparkles } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import CreationItem from "../components/CreationItem";
@@ -13,34 +13,34 @@ export default function Dashboard() {
 
   const { isSignedIn, getToken } = useAuth();
 
-  const fetchDashboardData = useCallback(async () => {
-    try {
-      setLoading(true);
-
-      const token = await getToken();
-
-      const { data } = await api.get("/api/user/creations", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (data.success && Array.isArray(data.creations)) {
-        setCreations(data.creations);
-      } else {
-        setCreations([]);
-        toast.error(data.message || "Failed to load creations");
-      }
-    } catch {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  }, [getToken]);
-
   useEffect(() => {
+    async function fetchDashboardData() {
+      try {
+        setLoading(true);
+
+        const token = await getToken();
+
+        const { data } = await api.get("/api/user/creations", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (data.success && Array.isArray(data.creations)) {
+          setCreations(data.creations);
+        } else {
+          setCreations([]);
+          toast.error(data.message || "Failed to load creations");
+        }
+      } catch {
+        toast.error("Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    }
+
     if (isSignedIn) {
       fetchDashboardData();
     }
-  }, [isSignedIn, fetchDashboardData]);
+  }, [isSignedIn, getToken]);
 
   return (
     <div className="h-full overflow-y-scroll p-6">

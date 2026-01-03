@@ -14,26 +14,29 @@ export default function Community() {
   const { user } = useUser();
   const { getToken } = useAuth();
 
-  async function fetchCreations() {
-    try {
-      const token = await getToken();
+  useEffect(() => {
+    async function fetchCreations() {
+      try {
+        const token = await getToken();
 
-      const response = await api.get(API_ENDPOINTS.PUBLISHED_CREATIONS, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+        const response = await api.get(API_ENDPOINTS.PUBLISHED_CREATIONS, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      const responseData = response.data;
-      if (responseData.success && Array.isArray(responseData.creations)) {
-        setCreations(responseData.creations);
-      } else {
+        if (response.data.success && Array.isArray(response.data.creations)) {
+          setCreations(response.data.creations);
+        } else {
+          toast.error("Failed to load community creations");
+        }
+      } catch {
         toast.error("Failed to load community creations");
+      } finally {
+        setLoading(false);
       }
-    } catch {
-      toast.error("Failed to load community creations");
-    } finally {
-      setLoading(false);
     }
-  }
+
+    if (user) fetchCreations();
+  }, [user, getToken]);
 
   async function toggleLike(id: number) {
     try {
@@ -63,10 +66,6 @@ export default function Community() {
       toast.error("Failed to update like");
     }
   }
-
-  useEffect(() => {
-    if (user) fetchCreations();
-  }, [user]);
 
   if (loading) {
     return (
@@ -109,7 +108,7 @@ export default function Community() {
                     loading="lazy"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                     <div className="absolute right-0 bottom-0 left-0 p-4">
                       <p className="mb-3 line-clamp-2 text-sm text-white">{creation.prompt}</p>
 

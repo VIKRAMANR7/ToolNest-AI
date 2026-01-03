@@ -99,7 +99,7 @@ export default function BlogTitles() {
 
         <button
           disabled={loading}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#c341f6] to-[#8e37eb] px-4 py-2 text-sm text-white disabled:opacity-50"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#c341f6] to-[#8e37eb] px-4 py-2 text-sm text-white disabled:opacity-50"
         >
           {loading ? (
             <span className="size-4 animate-spin rounded-full border-2 border-t-transparent" />
